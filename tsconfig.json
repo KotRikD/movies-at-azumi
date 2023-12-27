@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES6",
     "baseUrl": ".",
     "lib": [
       "ES2020",
@@ -17,7 +17,6 @@
     "isolatedModules": true,
     "strict": true,
     "sourceMap": false,
-    "outDir": "dist",
     "rootDir": ".",
     "paths": {
       "@/*": [
@@ -31,7 +30,12 @@
     "skipLibCheck": true,
     "noEmit": true,
     "incremental": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
   "exclude": [
     "node_modules",
@@ -40,6 +44,7 @@
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    "./@types"
+    "./@types",
+    ".next/types/**/*.ts"
   ]
 }
