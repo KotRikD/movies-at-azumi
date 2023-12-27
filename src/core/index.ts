@@ -3,12 +3,21 @@ import fastifyNext from '@fastify/nextjs';
 import crypto from 'crypto';
 import Fastify from 'fastify';
 import type { FastifyRequest } from 'fastify';
+import { createReadStream } from 'fs';
 import fs from 'fs/promises';
 import path from 'path';
 
 import { config } from '@/core/config';
 import { WorkerPool } from '@/core/worker/objects/instance';
 import nextConfig from '@/next.config';
+
+const createHashFromFile = (filePath: string) =>
+    new Promise<string>((resolve) => {
+        const hash = crypto.createHash('md5');
+        createReadStream(filePath)
+            .on('data', (data) => hash.update(data))
+            .on('end', () => resolve(hash.digest('hex')));
+    });
 
 (async () => {
     const server = Fastify({
@@ -83,10 +92,7 @@ import nextConfig from '@/next.config';
                 return new Error('something wrong with link');
             }
 
-            const fileBuffer = await fs.readFile(req.body.movieLink);
-            const hashSum = crypto.createHash('md5');
-            hashSum.update(fileBuffer);
-            const hex = hashSum.digest('hex');
+            const hex = await createHashFromFile(req.body.movieLink);
 
             if (server.workerPool.IsWorkerInProgress(hex)) {
                 reply.send({
@@ -163,10 +169,7 @@ import nextConfig from '@/next.config';
                 return new Error('something wrong with link');
             }
 
-            const fileBuffer = await fs.readFile(req.body.movieLink);
-            const hashSum = crypto.createHash('md5');
-            hashSum.update(fileBuffer);
-            const hex = hashSum.digest('hex');
+            const hex = await createHashFromFile(req.body.movieLink);
 
             const listedObjects = await server.s3.listObjectsV2({
                 Bucket: config.awsBucket,
