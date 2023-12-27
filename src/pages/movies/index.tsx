@@ -4,8 +4,9 @@ import path from 'path';
 
 import { config } from '@/core/config';
 import { walk } from '@/shared/lib/walk';
-import { MovieGetLink } from './ui/MovieGetLink';
-import { MovieTruncate } from './ui/MovieTruncate';
+
+import MovieGetLink from './ui/MovieGetLink';
+import MovieTruncate from './ui/MovieTruncate';
 
 interface IMoviePath extends path.ParsedPath {
     originalLink: string;

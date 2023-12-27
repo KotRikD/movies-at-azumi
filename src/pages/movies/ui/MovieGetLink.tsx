@@ -1,6 +1,6 @@
-import { Button } from "@chakra-ui/react";
-import { useCallback, useEffect, useReducer, useRef } from "react";
-import toast from "react-hot-toast";
+import { Button } from '@chakra-ui/react';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import toast from 'react-hot-toast';
 
 const fetchMovieLink = (movieLink: string, mkvAudioTrack?: number) =>
     fetch('/api/getMovieLink', {
@@ -30,7 +30,7 @@ const fetchMovieLink = (movieLink: string, mkvAudioTrack?: number) =>
             );
         });
 
-export const MovieGetLink: React.FC<{
+const MovieGetLink: React.FC<{
     movieLink: string;
 }> = ({ movieLink }) => {
     console.log(movieLink);
@@ -58,8 +58,10 @@ export const MovieGetLink: React.FC<{
 
     useEffect(() => {
         if (buttonState.state === 'in_progress' && !inProgressRef.current) {
-            const mkvAudioTrack = movieLink.endsWith(".mkv") ? Number(prompt("Enter audio-track number for .mkv")) : undefined;
- 
+            const mkvAudioTrack = movieLink.endsWith('.mkv')
+                ? Number(prompt('Enter audio-track number for .mkv'))
+                : undefined;
+
             fetchMovieLink(movieLink, mkvAudioTrack).then((link) => {
                 dispatch({
                     type: 'link',
@@ -87,7 +89,16 @@ export const MovieGetLink: React.FC<{
         dispatch({ type: 'in_progress' });
     }, [buttonState]);
 
-    return <Button onClick={onGetLink} isLoading={buttonState.state === 'in_progress'}>
-        {buttonState.state === 'in_progress' ? 'processing...' : 'Process movie'}
-    </Button>;
-};
+    return (
+        <Button
+            onClick={onGetLink}
+            isLoading={buttonState.state === 'in_progress'}
+        >
+            {buttonState.state === 'in_progress'
+                ? 'processing...'
+                : 'Process movie'}
+        </Button>
+    );
+};        
+
+export default MovieGetLink;
