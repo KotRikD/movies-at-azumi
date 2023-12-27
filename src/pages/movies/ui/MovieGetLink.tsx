@@ -99,6 +99,6 @@ const MovieGetLink: React.FC<{
                 : 'Process movie'}
         </Button>
     );
-};        
+};
 
 export default MovieGetLink;

@@ -11,14 +11,6 @@ import { config } from '@/core/config';
 import { WorkerPool } from '@/core/worker/objects/instance';
 import nextConfig from '@/next.config';
 
-const createHashFromFile = (filePath: string) =>
-    new Promise<string>((resolve) => {
-        const hash = crypto.createHash('md5');
-        createReadStream(filePath)
-            .on('data', (data) => hash.update(data))
-            .on('end', () => resolve(hash.digest('hex')));
-    });
-
 (async () => {
     const server = Fastify({
         logger: true,
@@ -86,13 +78,16 @@ const createHashFromFile = (filePath: string) =>
             }
 
             try {
-                await fs.stat(req.body.movieLink);
+                await fs.access(req.body.movieLink);
             } catch (exc) {
                 reply.code(400);
                 return new Error('something wrong with link');
             }
 
-            const hex = await createHashFromFile(req.body.movieLink);
+            const hex = crypto
+                .createHash('md5')
+                .update(req.body.movieLink)
+                .digest('hex');
 
             if (server.workerPool.IsWorkerInProgress(hex)) {
                 reply.send({
@@ -169,7 +164,10 @@ const createHashFromFile = (filePath: string) =>
                 return new Error('something wrong with link');
             }
 
-            const hex = await createHashFromFile(req.body.movieLink);
+            const hex = crypto
+                .createHash('md5')
+                .update(req.body.movieLink)
+                .digest('hex');
 
             const listedObjects = await server.s3.listObjectsV2({
                 Bucket: config.awsBucket,
