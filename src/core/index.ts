@@ -10,6 +10,7 @@ import path from 'path';
 import { config } from '@/core/config';
 import { WorkerPool } from '@/core/worker/objects/instance';
 import nextConfig from '@/next.config';
+import { safePath } from '@/shared/lib/safePath';
 
 (async () => {
     const server = Fastify({
@@ -63,7 +64,7 @@ import nextConfig from '@/next.config';
                 return new Error('Missing movieLink or it malformed');
             }
 
-            const parsedPath = path.parse(req.body.movieLink);
+            const parsedPath = path.parse(safePath(req.body.movieLink));
             if (parsedPath.root === '') {
                 reply.code(400);
                 return new Error('movieLink is not a path');
@@ -143,7 +144,7 @@ import nextConfig from '@/next.config';
                 return new Error('Missing movieLink or it malformed');
             }
 
-            const parsedPath = path.parse(req.body.movieLink);
+            const parsedPath = path.parse(safePath(req.body.movieLink));
             if (parsedPath.root === '') {
                 reply.code(400);
                 return new Error('movieLink is not a path');
