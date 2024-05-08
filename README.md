@@ -1,6 +1,6 @@
 pet project to understand how next.js fastify binding works :/ 
 
-Only for archiving purposes, just a simple project, that prepares video (mp4, hls) into hls stream.
+Only for archiving purposes, just a simple project, that prepares video (mp4, mkv (with audio track selection)) into hls stream.
 
 Made with:
 - Next.js 16
