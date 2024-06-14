@@ -33,8 +33,6 @@ const fetchMovieLink = (movieLink: string, mkvAudioTrack?: number) =>
 const MovieGetLink: React.FC<{
     movieLink: string;
 }> = ({ movieLink }) => {
-    console.log(movieLink);
-
     const inProgressRef = useRef(false);
     const [buttonState, dispatch] = useReducer(
         (_, action) => {
