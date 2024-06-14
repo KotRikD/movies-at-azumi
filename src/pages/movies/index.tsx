@@ -54,7 +54,7 @@ export const getServerSideProps: GetServerSideProps = async (req) => {
 
     return {
         props: {
-            movies: movies.sort((a, b) => a.base.localeCompare(b.base))
+            movies: movies.sort((a: any, b: any) => a.base.localeCompare(b.base))
         }
     };
 };
